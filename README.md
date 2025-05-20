@@ -5,7 +5,7 @@
 ✅ **基於 ASP.NET Core 8**，提供 RESTful API 支援 `CRUD（建立 / 讀取 / 更新 / 刪除）`    
 ✅ **容器化部署**（Docker Compose 一鍵啟動 `.NET 8 API + SQL Server` ）  
 ✅ **SQL Server 2022 整合**，支援完整的資料庫操作  
-✅ **Adminer** 作為 Web UI 管理工具，簡單易用(本機如有安裝SSMS，亦可連線127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
+✅ **Adminer** 作為 Web UI 管理資料庫工具，簡單易用(本機如有安裝SSMS，亦可連線127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
 ✅ **支援 API 測試**（Postman、cURL、PowerShell）  
 ✅ **提供 HTML 頁面呼叫使用 API**（使用者列表:user-list.html, 新增:user-add.html, 編輯:user-edit.html）  
 ✅ **熱重載**：開發時支援 `dotnet watch run` 
@@ -14,7 +14,7 @@
 
 ## 📦 環境需求
 ✔ **Docker Desktop**（用於容器化 `.NET API` 和 `SQL Server`）  
-✔ **.NET 8 SDK**（Docker Compose 啟動自動下載 mcr.microsoft.com/dotnet/sdk:8.0 與容器化部署）  
+✔ **.NET 8 SDK**（Docker Compose 啟動自動下載 mcr.microsoft.com/dotnet/sdk:8.0 與容器化部署.NET SDK）  
 ✔ **Postman**（可選，亦可使用 cURL，測試 REST API）
 
 ---
@@ -29,7 +29,7 @@
 │   ├── appsettings.json   # 資料庫連線帳密參數設定
 │   ├── api.csproj         # .NET 項目設定
 │   ├── Program.cs         # 主 API 程式
-│   ├── services/          # 子目錄:服務類 
+│   ├── services/          # 子目錄:服務類 程式 
 │   	├── DatabaseService.cs # 資料庫服務
 ├── www/                   # html頁面(呼叫 users 相關REST-API功能測試)
 │   ├── user-list.html     # 使用者 列表 html頁面
@@ -145,7 +145,7 @@ docker-compose down
 ## **使用html頁面呼叫使用API(使用者列表/使用者 新增 修改 刪除)**
 
 瀏覽器 開啟 www/user-list.html 檔案，可進行相關API呼叫使用與測試，
-包含: 使用者列表(使用者編輯&刪除)，使用者新增 等功能。
+包含: 使用者列表(含 使用者 編輯&刪除功能)，使用者新增 等功能。
 
 
 
