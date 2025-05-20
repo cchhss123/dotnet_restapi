@@ -7,14 +7,14 @@
 ✅ **SQL Server 2022 整合**，支援完整的資料庫操作  
 ✅ **Adminer** 作為 Web UI 管理工具，簡單易用  
 ✅ **支援 API 測試**（Postman、cURL、PowerShell）  
-✅ **提供 HTML 頁面測試 API**（user-list.html, user-add.html, user-edit.html）
+✅ **提供 HTML 頁面測試 API**（user-list.html, user-add.html, user-edit.html）  
 ✅ **熱重載**：開發時支援 `dotnet watch run` 
 
 ---
 
 ## 📦 環境需求
 ✔ **Docker Desktop**（用於容器化 `.NET API` 和 `SQL Server`）  
-✔ **.NET 8 SDK**（Docker Compose 啟動自動下載 mcr.microsoft.com/dotnet/sdk:8.0 與容器化部署）
+✔ **.NET 8 SDK**（Docker Compose 啟動自動下載 mcr.microsoft.com/dotnet/sdk:8.0 與容器化部署）  
 ✔ **Postman**（可選，亦可使用 cURL，測試 REST API）
 
 ---
