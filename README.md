@@ -37,6 +37,7 @@ docker-compose up -d
 
 ### **3️⃣ 建立資料庫**
 使用 `Adminer` 匯入 `init-db.sql` 來建立 **`demo` 資料庫** 和 `users` 表：
+
 1️⃣ **開啟 Adminer** 👉 `http://localhost:8080`  
 2️⃣ **登入資料庫**
    - **系統**: `MS SQL`
@@ -133,14 +134,15 @@ docker-compose down
 ├── docker-compose.yaml    # Docker 設定檔
 ├── init-db.sql            # SQL 資料庫初始化
 ├── api/                   # .NET API 原始碼
-│   ├── Program.cs         # 主 API 程式
-│   ├── DatabaseService.cs # 資料庫服務
-│   ├── api.csproj         # .NET 項目設定
 │   ├── appsettings.json   # 資料庫連線帳密參數設定
+│   ├── api.csproj         # .NET 項目設定
+│   ├── Program.cs         # 主 API 程式
+│   ├── services/          # 子目錄:服務類 
+│   	├── DatabaseService.cs # 資料庫服務
 ├── www/                   # html頁面(呼叫 users 相關REST-API功能測試)
 │   ├── user-list.html     # 使用者 列表 html頁面
-│   ├── user-add.html      # 使用者 新增 html頁面
-│   ├── user-edit.html     # 使用者 修改 html頁面
+│   ├── user-add.html      # 使用者 新增 頁面
+│   ├── user-edit.html     # 使用者 修改 頁面
 
 
 ```
