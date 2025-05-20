@@ -5,7 +5,7 @@
 ✅ **基於 ASP.NET Core 8**，提供 RESTful API 支援 `CRUD（建立 / 讀取 / 更新 / 刪除）`    
 ✅ **容器化部署**（Docker Compose 一鍵啟動 `.NET 8 API + SQL Server` ）  
 ✅ **SQL Server 2022 整合**，支援完整的資料庫操作  
-✅ **Adminer** 作為 Web UI 管理工具，簡單易用  
+✅ **Adminer** 作為 Web UI 管理工具，簡單易用(本機如有安裝SSMS，亦可連線127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
 ✅ **支援 API 測試**（Postman、cURL、PowerShell）  
 ✅ **提供 HTML 頁面測試 API**（user-list.html, user-add.html, user-edit.html）  
 ✅ **熱重載**：開發時支援 `dotnet watch run` 
@@ -136,6 +136,7 @@ docker-compose down
 │   ├── Program.cs         # 主 API 程式
 │   ├── DatabaseService.cs # 資料庫服務
 │   ├── api.csproj         # .NET 項目設定
+│   ├── appsettings.json   # 資料庫連線帳密參數設定
 ├── www/                   # html頁面(呼叫 users 相關REST-API功能測試)
 │   ├── user-list.html     # 使用者 列表 html頁面
 │   ├── user-add.html      # 使用者 新增 html頁面
