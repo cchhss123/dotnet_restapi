@@ -5,10 +5,10 @@
 ✅ **基於 ASP.NET Core 8**，提供 RESTful API 支援 `CRUD（建立 / 讀取 / 更新 / 刪除）`    
 ✅ **容器化部署**（Docker Compose 一鍵啟動 `.NET 8 API + SQL Server` ）  
 ✅ **SQL Server 2022 整合**，支援完整的資料庫操作  
-✅ **Adminer** 作為 Web UI 管理資料庫工具，簡單易用(本機如有安裝SSMS，亦可連線127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
+✅ **Adminer** 作為 Web UI 管理資料庫工具，簡單易用(本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
 ✅ **支援 API 測試**（Postman、cURL、PowerShell）  
 ✅ **提供 HTML 頁面呼叫使用 API**（使用者列表:user-list.html, 新增:user-add.html, 編輯:user-edit.html）  
-✅ **熱重載**：開發時支援 `dotnet watch run` 
+✅ **熱重載**：開發時支援 `dotnet watch run` ，程式碼異動會 hot-reload
 
 ---
 
@@ -69,6 +69,7 @@ docker-compose up -d
      
 3️⃣ **點選[匯入]功能，選擇 `init-db.sql`檔案後，執行匯入**（建立`demo` 資料庫 與 `users` 表）
 
+PS: 本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，使用 SSMS 建立`demo` 資料庫 與 `users` 表
 ---
 
 ## 🖥 API 測試（RESTful API）
@@ -134,18 +135,18 @@ Invoke-WebRequest -Uri "http://localhost:3000/users/1" -Method DELETE
 
 ---
 
+## **使用html頁面呼叫使用API(使用者列表/使用者 新增 修改 刪除)**
+
+瀏覽器 開啟 www/user-list.html 檔案，可進行相關API呼叫使用與測試，
+包含: 使用者列表(含 使用者 編輯&刪除功能)，使用者新增 等功能。
+
+---
+
 ## **🛠 docker容器 停止與刪除**
 停止並刪除所有容器：
 ```sh
 docker-compose down
 ```
-
----
-
-## **使用html頁面呼叫使用API(使用者列表/使用者 新增 修改 刪除)**
-
-瀏覽器 開啟 www/user-list.html 檔案，可進行相關API呼叫使用與測試，
-包含: 使用者列表(含 使用者 編輯&刪除功能)，使用者新增 等功能。
 
 
 
