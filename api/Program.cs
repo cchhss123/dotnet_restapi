@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.OpenApi.Models; // ✅ 加入 Swagger 命名空間
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,6 +14,18 @@ builder.Services.AddSingleton(builder.Configuration);
 // 註冊 DatabaseService
 builder.Services.AddScoped<DatabaseService>();
 
+// ✅ 註冊 Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "User API",
+        Version = "v1",
+        Description = "使用者管理 API，支援 CRUD 操作"
+    });
+});
+
 // 註冊 CORS
 builder.Services.AddCors(options =>
 {
@@ -20,8 +33,19 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
 app.UseCors("AllowAll");
 
+// ✅ 啟用 Swagger UI
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "User API v1");
+    options.RoutePrefix = "swagger"; // 設定 Swagger UI 在 `/swagger`
+});
+
+
+// 🔹 取得所有使用者列表 (GET /users)
 app.MapGet("/users", async (DatabaseService dbService) =>
 {
     try
@@ -38,6 +62,7 @@ app.MapGet("/users", async (DatabaseService dbService) =>
     }
 });
 
+// 🔹 透過 ID 查詢使用者 (GET /users/{id})
 app.MapGet("/users/{id}", async (long id, DatabaseService dbService) =>
 {
     try
@@ -58,6 +83,7 @@ app.MapGet("/users/{id}", async (long id, DatabaseService dbService) =>
     }
 });
 
+// 🔹 新增使用者 (POST /users)
 app.MapPost("/users", async (UserDto user, DatabaseService dbService) =>
 {
     try
@@ -77,6 +103,7 @@ app.MapPost("/users", async (UserDto user, DatabaseService dbService) =>
     }
 });
 
+// 🔹 更新使用者 (PUT /users/{id})
 app.MapPut("/users/{id}", async (long id, UserDto user, DatabaseService dbService) =>
 {
     try
@@ -97,6 +124,7 @@ app.MapPut("/users/{id}", async (long id, UserDto user, DatabaseService dbServic
     }
 });
 
+// 🔹 刪除使用者 (DELETE /users/{id})
 app.MapDelete("/users/{id}", async (long id, DatabaseService dbService) =>
 {
     try
@@ -116,5 +144,5 @@ app.MapDelete("/users/{id}", async (long id, DatabaseService dbService) =>
 
 app.Run();
 
-// 定義 UserDto
+// 🔹 定義 UserDto (用於解析 API Request Body)
 public record UserDto(string Name, string Email);

@@ -25,7 +25,23 @@ services:
       - default
 
   c_api:
-    image: mcr.microsoft.com/dotnet/sdk:8.0  # 官方 .NET SDK 映像檔
+    # image: mcr.microsoft.com/dotnet/sdk:8.0  # 官方 .NET SDK 映像檔
+    # container_name: c_api
+    # working_dir: /app
+    # volumes:
+    #   - ./api:/app  # 掛載 C# 原始碼
+    # ports:
+    #   - "3000:8080"
+    # depends_on:
+    #   - sqlsrv2022
+    # environment:
+    #   DB_CONNECTION_STRING: "Server=sqlsrv2022;Database=demo;User Id=sa;Password=MSsql2022;TrustServerCertificate=True"
+    # command: ["dotnet", "watch", "run", "--project", "/app/api.csproj"]  # 直接執行 C# 專案，hot-reload
+    # networks:
+    #     - default
+    build:
+      context: .
+      dockerfile: ./api/Dockerfile
     container_name: c_api
     working_dir: /app
     volumes:
@@ -34,11 +50,8 @@ services:
       - "3000:8080"
     depends_on:
       - sqlsrv2022
-    environment:
-      DB_CONNECTION_STRING: "Server=sqlsrv2022;Database=demo;User Id=sa;Password=MSsql2022;TrustServerCertificate=True"
     command: ["dotnet", "watch", "run", "--project", "/app/api.csproj"]  # 直接執行 C# 專案，hot-reload
     networks:
-        - default
-
+      - default
 volumes:
   sqlsrv-data:

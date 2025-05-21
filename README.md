@@ -8,6 +8,7 @@
 ✅ **Adminer** 作為 Web UI 管理資料庫工具，簡單易用(本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
 ✅ **支援 API 測試**（Postman、cURL、PowerShell）  
 ✅ **提供 HTML 頁面呼叫使用 API**（使用者列表:user-list.html, 新增:user-add.html, 編輯:user-edit.html）  
+✅ **提供 Swagger UI** 提供直觀的 API 測試介面 (使用 Dockerfile 安裝 Swashbuckle.AspNetCore，確保 Swagger 可用）  
 ✅ **熱重載**：開發時支援 `dotnet watch run` ，程式碼異動會 hot-reload
 
 ---
@@ -26,11 +27,12 @@
 ├── docker-compose.yaml    # Docker 設定檔
 ├── init-db.sql            # SQL 資料庫初始化
 ├── api/                   # .NET API 原始碼
+│   ├── Dockerfile         # .NET API 的 Dockerfile（安裝 Swagger）
 │   ├── appsettings.json   # 資料庫連線帳密參數設定
 │   ├── api.csproj         # .NET 項目設定
 │   ├── Program.cs         # 主 API 程式
 │   ├── services/          # 子目錄:服務類 程式 
-│   	├── DatabaseService.cs # 資料庫服務
+│   	  ├── DatabaseService.cs # 資料庫服務
 ├── www/                   # html頁面(呼叫 users 相關REST-API功能測試)
 │   ├── user-list.html     # 使用者 列表 html頁面
 │   ├── user-add.html      # 使用者 新增 頁面
@@ -54,6 +56,7 @@ docker-compose up -d
 ```
 ✅ **成功啟動後：**
 - `.NET API` 在 `http://localhost:3000`
+- `API Swagger UI` 在 `http://localhost:3000/swagger`
 - `Adminer` 在 `http://localhost:8080`
 
 ### **3️⃣ 建立資料庫**
@@ -65,7 +68,7 @@ docker-compose up -d
    - **伺服器**: `sqlsrv2022`
    - **使用者**: `sa`
    - **密碼**: `MSsql2022`
-   - **資料庫**: ``
+   - **資料庫**: 
      
 3️⃣ **點選[匯入]功能，選擇 `init-db.sql`檔案後，執行匯入**（建立`demo` 資料庫 與 `users` 表）
 
@@ -74,7 +77,7 @@ PS: 本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，使用 SSM
 
 ## 🖥 API 測試（RESTful API）
 
-可使用 `cURL` 或 `Postman` 測試 API：
+使用 Postman、cURL 或 PowerShell 測試 API，或使用 Swagger UI (http://localhost:3000/swagger)。
 
 ### 📌 API 端點：
 |  方法  |  路徑                           | 描述          |
