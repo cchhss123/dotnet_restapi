@@ -79,7 +79,7 @@ PS: 本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，使用 SSM
 
 ## 🖥 API 測試（RESTful API）
 
-使用 Postman、cURL 或 PowerShell 測試 API，或使用 Swagger UI (http://localhost:3000/swagger)。
+使用 Postman、cURL 或 PowerShell 測試 API，或使用 Swagger UI `http://localhost:3000/swagger`
 
 ### 📌 API 端點：
 |  方法  |  路徑                           | 描述          | 認證要求          |
