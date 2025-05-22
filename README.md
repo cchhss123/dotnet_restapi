@@ -93,6 +93,7 @@ PS: 本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，使用 SSM
 
 
 📌 PUT 和 DELETE 端點 需要 JWT Token 認證，請先執行 /auth 來取得 Token。
+   執行API /auth 時，POST 測試帳密資料為 {"Account": "api", "Password": "test"}
 
 ### **📌 取得 JWT Token**
 ```sh
