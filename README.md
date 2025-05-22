@@ -3,7 +3,7 @@
 
 ## 🌟 專案特色
 ✅ **基於 ASP.NET Core 8**，提供 RESTful API 支援 `CRUD（建立 / 讀取 / 更新 / 刪除）`    
-✅ **使用 JWT 身份驗證**，此專案示範驗證保護 `/users/{id} 的 PUT 與 DELETE 2個api端點` 
+✅ **使用 JWT 身份驗證**，此專案示範驗證保護 `/users/{id} 的 PUT 與 DELETE 2個api端點`    
 ✅ **容器化部署**（Docker Compose 一鍵啟動 `.NET 8 API + SQL Server` ）  
 ✅ **SQL Server 2022 整合**，支援完整的資料庫操作  
 ✅ **Adminer** 作為 Web UI 管理資料庫工具，簡單易用(本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
@@ -33,7 +33,7 @@
 │   ├── api.csproj         # .NET 項目設定
 │   ├── Program.cs         # 主 API 程式
 │   ├── services/          # 子目錄:服務類 程式 
-│   	  ├── DatabaseService.cs # 資料庫 服務
+│       ├── DatabaseService.cs # 資料庫 服務
 │       ├── JwtService.cs      # JWT驗證 服務
 ├── www/                   # html頁面(呼叫 users 相關REST-API功能測試)
 │   ├── user-list.html     # 使用者 列表 html頁面
@@ -92,7 +92,7 @@ PS: 本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，使用 SSM
 | DELETE | `/users/{id}`                  | 刪除使用者    | ✅ 需要 JWT |
 
 
-📌 PUT 和 DELETE 端點 需要 JWT Token，請先執行 /auth 來取得 Token。
+📌 PUT 和 DELETE 端點 需要 JWT Token 認證，請先執行 /auth 來取得 Token。
 
 ### **📌 取得 JWT Token**
 ```sh
