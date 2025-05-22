@@ -89,28 +89,65 @@ $(document).ready(function() {
     }
   });
 
+  // 取得 Token，若無則自動取得
+  function getToken(callback) {
+      let token = localStorage.getItem("jwt_token");
+      
+      if (!token) {
+          $.ajax({
+              url: "http://localhost:3000/auth",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({ Account: "api", Password: "test" }),
+              success: function(response) {
+                  localStorage.setItem("jwt_token", response.token);
+                  callback(response.token);
+              },
+              error: function() {
+                  alert("登入失敗，無法取得 Token！");
+              }
+          });
+      } else {
+          callback(token);
+      }
+  }
+
   // 更新使用者資料
   $('#editForm').on('submit', function(event) {
-    event.preventDefault();
-    const updatedUser = {
-      name: $('#name').val(),
-      email: $('#email').val()
-    };
+      event.preventDefault();
+      const updatedUser = {
+          name: $('#name').val(),
+          email: $('#email').val()
+      };
 
-    $.ajax({
-      url: `http://localhost:3000/users/${userId}`,
-      type: 'PUT',
-      contentType: 'application/json',
-      data: JSON.stringify(updatedUser),
-      success: function() {
-        alert('更新成功！');
-        window.location.href = 'user-list.html';
-      },
-      error: function(xhr) {
-        alert('更新失敗: ' + xhr.responseText);
-      }
-    });
+      // 先取得 Token
+      getToken(function(token) {
+          $.ajax({
+              url: `http://localhost:3000/users/${userId}`,
+              type: 'PUT',
+              contentType: 'application/json',
+              data: JSON.stringify(updatedUser),
+              headers: { "Authorization": "Bearer " + token }, // 🔹 加入 JWT Token
+              success: function() {
+                  alert('更新成功！');
+                  window.location.href = 'user-list.html';
+              },
+              error: function(xhr) {
+                  if (xhr.status === 401) { 
+                      localStorage.removeItem("jwt_token"); // 🔹 Token 失效，刪除並重新獲取
+                      alert("未授權，重新登入！");
+                      getToken(function(newToken) {
+                          $('#editForm').submit(); // 🔹 重新提交表單
+                      });
+                  } else {
+                      alert('更新失敗: ' + xhr.responseText);
+                  }
+              }
+          });
+      });
   });
+
+
 });
 </script>
 

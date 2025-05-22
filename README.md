@@ -3,6 +3,7 @@
 
 ## 🌟 專案特色
 ✅ **基於 ASP.NET Core 8**，提供 RESTful API 支援 `CRUD（建立 / 讀取 / 更新 / 刪除）`    
+✅ **使用 JWT 身份驗證**，此專案示範驗證保護 `/users/{id} 的 PUT 與 DELETE 2個api端點` 
 ✅ **容器化部署**（Docker Compose 一鍵啟動 `.NET 8 API + SQL Server` ）  
 ✅ **SQL Server 2022 整合**，支援完整的資料庫操作  
 ✅ **Adminer** 作為 Web UI 管理資料庫工具，簡單易用(本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，帳密請參考api/appsettings.json)  
@@ -32,7 +33,8 @@
 │   ├── api.csproj         # .NET 項目設定
 │   ├── Program.cs         # 主 API 程式
 │   ├── services/          # 子目錄:服務類 程式 
-│   	  ├── DatabaseService.cs # 資料庫服務
+│   	  ├── DatabaseService.cs # 資料庫 服務
+│       ├── JwtService.cs      # JWT驗證 服務
 ├── www/                   # html頁面(呼叫 users 相關REST-API功能測試)
 │   ├── user-list.html     # 使用者 列表 html頁面
 │   ├── user-add.html      # 使用者 新增 頁面
@@ -80,13 +82,37 @@ PS: 本機如有安裝SSMS，亦可連線 127.0.0.1 管理資料庫，使用 SSM
 使用 Postman、cURL 或 PowerShell 測試 API，或使用 Swagger UI (http://localhost:3000/swagger)。
 
 ### 📌 API 端點：
-|  方法  |  路徑                           | 描述          |
-|--------|--------------------------------|---------------|
-| GET    | `/users`                       | 取得所有使用者 |
-| GET    | `/users/{id}`                  | 取得特定使用者 |
-| POST   | `/users`                       | 新增使用者     |
-| PUT    | `/users/{id}`                  | 更新使用者資料 |
-| DELETE | `/users/{id}`                  | 刪除使用者    |
+|  方法  |  路徑                           | 描述          | 認證要求          |
+|--------|--------------------------------|---------------|---------------|
+| POST   | `/auth`                       | 認證API帳號，取得 JWT Token | ❌ 不需要 |
+| GET    | `/users`                       | 取得所有使用者  | ❌ 不需要 |
+| GET    | `/users/{id}`                  | 取得特定使用者  | ❌ 不需要 |
+| POST   | `/users`                       | 新增使用者      | ❌ 不需要 |
+| PUT    | `/users/{id}`                  | 更新使用者資料  | ✅ 需要 JWT |
+| DELETE | `/users/{id}`                  | 刪除使用者    | ✅ 需要 JWT |
+
+
+📌 PUT 和 DELETE 端點 需要 JWT Token，請先執行 /auth 來取得 Token。
+
+### **📌 取得 JWT Token**
+```sh
+curl -X POST http://localhost:3000/auth -H "Content-Type: application/json" -d '{"Account": "api", "Password": "test"}'
+```
+如果是 WINDOWS PowerShell 使用以下指令
+```sh
+$headers = @{ "Content-Type" = "application/json" }
+Invoke-WebRequest -Uri "http://localhost:3000/auth" -Method POST -Headers $headers -Body '{"Account": "api", "Password": "test"}'
+```
+
+成功回應範例：
+
+```json
+{
+  "message": "Login successful",
+  "token": "your.jwt.token"
+}
+```
+📌 請記住 your.jwt.token，後續 API 需要使用！
 
 
 ### **📌 取得所有使用者**
@@ -117,23 +143,24 @@ $headers = @{ "Content-Type" = "application/json" }
 Invoke-WebRequest -Uri "http://localhost:3000/users" -Method POST -Headers $headers -Body '{"name": "andrew","email": "cchhss123@hotmail.com"}'
 ```
 
-### **📌 更新使用者**
+### **📌 更新使用者（需要 JWT Token）**
 ```sh
- curl -X PUT http://localhost:3000/users/1 -H "Content-Type: application/json" -d '{"name": "andy", "email": "andy@example.com"}'
+curl -X PUT http://localhost:3000/users/1 -H "Authorization: Bearer your.jwt.token" -H "Content-Type: application/json" -d '{"name": "andy", "email": "andy@example.com"}'
 ```
 如果是 WINDOWS PowerShell 使用以下指令
 ```sh
-$headers = @{ "Content-Type" = "application/json" }
+$headers = @{ "Authorization" = "Bearer your.jwt.token"; "Content-Type" = "application/json" }
 Invoke-WebRequest -Uri "http://localhost:3000/users/1" -Method PUT -Headers $headers -Body '{"name": "andy", "email": "andy@example.com"}'
 ```
 
-### **📌 刪除使用者**
+### **📌 刪除使用者（需要 JWT Token）**
 ```sh
-curl -X DELETE http://localhost:3000/users/1
+curl -X DELETE http://localhost:3000/users/6 -H "Authorization: Bearer your.jwt.token"
 ```
 如果是 WINDOWS PowerShell 使用以下指令
 ```sh
-Invoke-WebRequest -Uri "http://localhost:3000/users/1" -Method DELETE
+$headers = @{ "Authorization" = "Bearer your.jwt.token" }
+Invoke-WebRequest -Uri "http://localhost:3000/users/1" -Method DELETE -Headers $headers
 ```
 
 ---

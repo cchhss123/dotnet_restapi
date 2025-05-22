@@ -101,23 +101,60 @@ $(document).ready(function() {
     window.location.href = `user-edit.html?id=${userId}`;
   });
 
-  // 刪除
+  // 取得 Token，若無則自動取得
+  function getToken(callback) {
+      let token = localStorage.getItem("jwt_token");
+
+      if (!token) {
+          $.ajax({
+              url: "http://localhost:3000/auth",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({ Account: "api", Password: "test" }),
+              success: function(response) {
+                  localStorage.setItem("jwt_token", response.token);
+                  callback(response.token);
+              },
+              error: function() {
+                  alert("登入失敗，無法取得 Token！");
+              }
+          });
+      } else {
+          callback(token);
+      }
+  }
+
+  // 刪除使用者
   $('#userTable').on('click', '.delete-btn', function() {
-    const userId = $(this).data('id');
-    if (confirm('確定要刪除此使用者嗎？')) {
-      $.ajax({
-        url: `http://localhost:3000/users/${userId}`,
-        type: 'DELETE',
-        success: function() {
-          alert('刪除成功！');
-          table.ajax.reload();
-        },
-        error: function(xhr) {
-          alert('刪除失敗: ' + xhr.responseText);
-        }
-      });
-    }
+      const userId = $(this).data('id');
+
+      if (confirm('確定要刪除此使用者嗎？')) {
+          // 先取得 Token
+          getToken(function(token) {
+              $.ajax({
+                  url: `http://localhost:3000/users/${userId}`,
+                  type: 'DELETE',
+                  headers: { "Authorization": "Bearer " + token }, // 🔹 加入 JWT Token
+                  success: function() {
+                      alert('刪除成功！');
+                      table.ajax.reload();
+                  },
+                  error: function(xhr) {
+                      if (xhr.status === 401) { 
+                          localStorage.removeItem("jwt_token"); // 🔹 Token 失效，刪除並重新獲取
+                          alert("未授權，重新登入！");
+                          getToken(function(newToken) {
+                              $('#userTable .delete-btn[data-id="' + userId + '"]').click(); // 🔹 重新執行刪除
+                          });
+                      } else {
+                          alert('刪除失敗: ' + xhr.responseText);
+                      }
+                  }
+              });
+          });
+      }
   });
+
 });
 </script>
 
